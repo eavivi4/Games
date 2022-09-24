@@ -20,11 +20,31 @@ void TieFunction(string enemy_pick)
     cout << "Enemy picked: " << enemy_pick << endl;
 }
 
+string LowerWord(string input)
+{
+    string output;
+    for (int i = 0; i < input.size(); i++)
+    {
+        output += tolower(input[i]);
+    }
+    return output;
+}
+
 void RPS() {
+
     string play;
     cout << "Welcome to Rock Paper Scissors" << endl;
-    cout << "Rock, Paper Scissors! ";
-    cin >> play;
+
+    // Input validation, need to add condition for just ENTER key
+    while (play != "rock" && play != "paper" && play != "scissors")
+    {
+        cout << "Rock, Paper Scissors! ";
+        cin >> play;
+        // Make sure input is all lowercase for input validation
+        play = LowerWord(play);
+    }
+    
+    
 
     // Random pick
     vector<string> options = {"Rock", "Paper", "Scissors"};
@@ -32,7 +52,7 @@ void RPS() {
     string enemy_pick = options[rand() % options.size()];
 
     // Check conditions
-    if(play == "Rock")
+    if(play == "rock")
     {
         if(enemy_pick == "Scissors")
         {
@@ -50,7 +70,7 @@ void RPS() {
             TieFunction(enemy_pick);
         }
     }
-    else if (play == "Paper")
+    else if (play == "paper")
     {
         if(enemy_pick == "Rock")
         {
@@ -68,7 +88,7 @@ void RPS() {
             TieFunction(enemy_pick);
         }
     }
-    else if (play == "Scissors")
+    else if (play == "scissors")
     {
         if(enemy_pick == "Paper")
         {
@@ -88,8 +108,8 @@ void RPS() {
     }
     else
     {
-        // Fix for input validation
-        cout << "Incorrect input" << endl;
+        // Would not arrive here
+        return;
     }
     return;
 }
