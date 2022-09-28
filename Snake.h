@@ -1,13 +1,14 @@
+#include <windows.h>
 #include <iostream>
 #include <conio.h>
-#include <unistd.h>
-#include <windows.h>
 using namespace std;
 
 const int width = 20;
 const int height = 20;
 int snakeX, snakeY, fruitX, fruitY, score;
 bool gameOver;
+enum dir {STOP, UP, DOWN, LEFT, RIGHT};
+dir d;
 
 void Board() {
 
@@ -55,6 +56,7 @@ void Board() {
 
 void Snake() {
     gameOver = false;
+    d = STOP;
     // Have the snake in the middle of the screen
     snakeX = width/2;
     snakeY = height/2;
@@ -81,25 +83,44 @@ void LoseSnake() {
     }
 }
 
+void Logic() {
+    switch(d)
+    {
+        case UP:
+            snakeY--;
+            break;
+        case DOWN:
+            snakeY++;
+            break;
+        case RIGHT:
+            snakeX++;
+            break;
+        case LEFT:
+            snakeX--;
+            break;
+    }
+    return;
+}
+
 void Input() {
-    // if (_kbhit())
-    // {
-    //     switch(GetAsyncKeyState())
-    //     {
-    //         case 'w':
-    //             snakeY--;
-    //             break;
-    //         case 'd':
-    //             snakeX++;
-    //             break;
-    //         case 's':
-    //             snakeY++;
-    //             break;
-    //         case 'a':
-    //             snakeX--;
-    //             break;
-    //     }
-    // }
+    if (_kbhit())
+    {
+        switch(_getch())
+        {
+            case 'w':
+                d = UP;
+                break;
+            case 'd':
+                d = RIGHT;
+                break;
+            case 's':
+                d = DOWN;
+                break;
+            case 'a':
+                d = LEFT;
+                break;
+        }
+    }
     
     WinSnake();
 }
@@ -112,7 +133,8 @@ void SnakeGame() {
     {
         Board();
         Input();
-        sleep(40);
+        Logic();
+        //leep(40);
     }
     return;
 }
