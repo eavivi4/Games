@@ -2,6 +2,7 @@
 #include <fstream>
 #include "RPS.h"
 #include "TTT.h"
+#include "Snake.h"
 using namespace std;
 bool LoginFunc (string username, string password)
 {
@@ -61,8 +62,9 @@ int main() {
    cout << "Which game would you like to play? " << endl;
    cout << "1. Rock Paper Scissors" << endl;
    cout << "2. Tic Tac Toe" << endl;
+   cout << "3. Snake" << endl;
    // Add more options
-   cout << "3. Other game" << endl;
+   cout << "4. Exit" << endl;
    cin >> pick;
    switch (pick)
    {
@@ -71,6 +73,10 @@ int main() {
          break;
       case 2:
          TicTacToe();
+         break;
+      case 3:
+         SnakeGame();
+         break;
       default:
          break;
    }
