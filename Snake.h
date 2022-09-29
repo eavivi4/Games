@@ -1,6 +1,8 @@
-#include <windows.h>
+// #include <windows.h>
 #include <iostream>
 #include <conio.h>
+#include <chrono>
+#include <thread>
 using namespace std;
 
 const int width = 20;
@@ -17,7 +19,7 @@ void Board() {
     // Top of board
     for (int i = 0; i < width; i++)
     {
-        cout << ".";
+        cout << "#";
     }
     cout << endl;
 
@@ -28,15 +30,15 @@ void Board() {
         {
             if (j == 0 || j == height - 1)
             {
-                cout << ".";
+                cout << "#";
             }
             else if(i == snakeY && j == snakeX)
             {
-                cout << "S";
+                cout << ".";
             }
             else if(i == fruitY && j == fruitX)
             {
-                cout << "F";
+                cout << "O";
             }
             else
             {
@@ -49,7 +51,7 @@ void Board() {
     // Bottom of board
     for (int i = 0; i < width; i++)
     {
-        cout << ".";
+        cout << "#";
     }
     cout << endl;
 } 
@@ -69,23 +71,25 @@ void Snake() {
 void WinSnake() {
     if (snakeX == fruitX && snakeY == fruitY)
     {
-        cout << "You win!" << endl;
         gameOver = true;
+        cout << "You win!" << endl;
     }
     return;
 }
 
 void LoseSnake() {
-    if (snakeX < 0 || snakeY < 0 || snakeX >= width || snakeY >= height)
+    if (snakeX <= 0 || snakeY <= 0 || snakeX >= width || snakeY >= height)
     {
-        cout << "Game Over..." << endl;
         gameOver = true;
+        cout << "Game Over..." << endl;
+        
     }
 }
 
 void Logic() {
     switch(d)
     {
+        // Change this so that the last point of the snake becomes the first one
         case UP:
             snakeY--;
             break;
@@ -103,6 +107,8 @@ void Logic() {
 }
 
 void Input() {
+
+    // Keyboard input to move snake
     if (_kbhit())
     {
         switch(_getch())
@@ -121,11 +127,11 @@ void Input() {
                 break;
         }
     }
-    
+
+    // Check if won or lost
+    LoseSnake();
     WinSnake();
 }
-
-
 
 void SnakeGame() {
     Snake();
@@ -134,7 +140,9 @@ void SnakeGame() {
         Board();
         Input();
         Logic();
-        //leep(40);
+
+        // Prevent the screen from flashing
+        std::this_thread::sleep_for(std::chrono::milliseconds(400));
     }
     return;
 }
