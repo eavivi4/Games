@@ -11,9 +11,13 @@ int snakeX, snakeY, fruitX, fruitY, score;
 bool gameOver;
 enum dir {STOP, UP, DOWN, LEFT, RIGHT};
 dir d;
+int tailLength;
+int tailX[100];
+int tailY[100];
 
 void Board() {
 
+    // Prevent the board from being drawn over and over again, several times
     system("CLS");
 
     // Top of board
@@ -42,7 +46,21 @@ void Board() {
             }
             else
             {
-                cout << " ";
+                // Print tail or print blank space, depending on x and y coordinates
+                bool tail = false;
+                for (int k = 0; k < tailLength; k++)
+                {
+                    if (i == tailY[k] && j == tailX[k])
+                    {
+                        tail = true;
+                        cout << ".";
+                    }
+                }
+                if (tail == false)
+                {
+                    cout << " ";
+                }
+                
             }
         }
         cout << endl;
@@ -54,11 +72,16 @@ void Board() {
         cout << "#";
     }
     cout << endl;
+
+    cout << "Score: " << score << endl;
 } 
 
 void Snake() {
+
+    // Start the game
     gameOver = false;
     d = STOP;
+
     // Have the snake in the middle of the screen
     snakeX = width/2;
     snakeY = height/2;
@@ -69,7 +92,9 @@ void Snake() {
 }
 
 void WinSnake() {
-    if (snakeX == fruitX && snakeY == fruitY)
+
+    // Win the game if caught 10 fruit
+    if (score == 1000)
     {
         gameOver = true;
         cout << "You win!" << endl;
@@ -78,15 +103,55 @@ void WinSnake() {
 }
 
 void LoseSnake() {
-    if (snakeX <= 0 || snakeY <= 0 || snakeX >= width || snakeY >= height)
+
+    // Check if out of bounds
+    if (snakeX < 0 || snakeY < 0 || snakeX >= width || snakeY >= height)
     {
         gameOver = true;
         cout << "Game Over..." << endl;
-        
     }
+    return;
 }
 
-void Logic() {
+void FruitCaught() {
+
+    // If a fruit is caught, generate a new one
+    if (snakeX == fruitX && snakeY == fruitY)
+    {
+        score += 10;
+        tailLength++;
+        fruitX = rand() % width;
+        fruitY = rand() % height;
+    }
+    return;
+}
+
+void TailMovement() {
+
+    // Have the tail follow snake's x and y coordinates by moving them up
+    int prevX = tailX[0];
+    int prevY = tailY[0];
+    int currX, currY;
+    tailX[0] = snakeX;
+    tailY[0] = snakeY;
+    for (int i = 1; i < tailLength; i++)
+    {
+        // Save variables
+        currX = tailX[i];
+        currY = tailY[i];
+
+        // Switch
+        tailX[i] = prevX;
+        tailY[i] = prevY;
+        prevX = currX;
+        prevY = currY;
+    }
+    return;
+}
+
+void Movements() {
+
+    TailMovement();
     switch(d)
     {
         // Change this so that the last point of the snake becomes the first one
@@ -128,18 +193,22 @@ void Input() {
         }
     }
 
-    // Check if won or lost
+    // Check if fruit caught, won, or lost
     LoseSnake();
+    FruitCaught();
     WinSnake();
 }
 
 void SnakeGame() {
+
+    // Set important variables
     Snake();
     while (!gameOver)
     {
+        // Play the game while it is not won or lost
         Board();
         Input();
-        Logic();
+        Movements();
 
         // Prevent the screen from flashing
         std::this_thread::sleep_for(std::chrono::milliseconds(400));
