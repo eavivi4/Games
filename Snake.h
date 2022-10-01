@@ -1,4 +1,3 @@
-// #include <windows.h>
 #include <iostream>
 #include <conio.h>
 #include <chrono>
@@ -8,7 +7,7 @@ using namespace std;
 const int width = 20;
 const int height = 20;
 int snakeX, snakeY, fruitX, fruitY, score;
-bool gameOver;
+bool gameOver, winner;
 enum dir {STOP, UP, DOWN, LEFT, RIGHT};
 dir d;
 int tailLength;
@@ -93,10 +92,11 @@ void Snake() {
 
 void WinSnake() {
 
-    // Win the game if caught 10 fruit
-    if (score == 1000)
+    // Win the game if caught 50 fruit
+    if (score == 500)
     {
         gameOver = true;
+        winner = true;
         cout << "You win!" << endl;
     }
     return;
@@ -104,11 +104,15 @@ void WinSnake() {
 
 void LoseSnake() {
 
-    // Check if out of bounds
-    if (snakeX < 0 || snakeY < 0 || snakeX >= width || snakeY >= height)
+    // Check if head of snake touches the tail
+    for (int i = 0; i < tailLength; i++)
     {
-        gameOver = true;
-        cout << "Game Over..." << endl;
+        if (snakeX == tailX[i] && snakeY == tailY[i])
+        {
+            gameOver = true;
+            winner = false;
+            cout << "Game Over..." << endl;
+        }
     }
     return;
 }
@@ -168,6 +172,29 @@ void Movements() {
             snakeX--;
             break;
     }
+    
+    // Check if out of bounds, if it is, keep in bounds by coming out the other side
+    if (snakeX < 0) 
+    {
+        snakeX = width - 1;   
+    }
+    if (snakeY < 0)
+    {
+        snakeY = height - 1;
+    }
+    if(snakeX >= width)
+    {
+        snakeX = 0;
+    }
+    if(snakeY >= height)
+    {
+        snakeY = 0;
+    }
+
+    // Check if fruit caught, won, or lost
+    LoseSnake();
+    FruitCaught();
+    WinSnake();
     return;
 }
 
@@ -192,14 +219,10 @@ void Input() {
                 break;
         }
     }
-
-    // Check if fruit caught, won, or lost
-    LoseSnake();
-    FruitCaught();
-    WinSnake();
+    return;
 }
 
-void SnakeGame() {
+int SnakeGame() {
 
     // Set important variables
     Snake();
@@ -213,5 +236,6 @@ void SnakeGame() {
         // Prevent the screen from flashing
         std::this_thread::sleep_for(std::chrono::milliseconds(400));
     }
-    return;
+
+    return score;
 }

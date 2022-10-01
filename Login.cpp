@@ -4,6 +4,45 @@
 #include "TTT.h"
 #include "Snake.h"
 using namespace std;
+
+class User {
+   private:
+      string username, password;
+      int score;
+   public: 
+      User() {
+         username = "";
+         password = "";
+         score = 0;
+      }
+      ~User() {
+         username = "";
+         password = "";
+         //score = 0;
+      }
+      string GetUsername() {
+         return username;
+      }
+      void SetUsername(string u) {
+         username = u;
+         return;
+      }
+      string GetPassword() {
+         return password;
+      }
+      void SetPassword(string p) {
+         password = p;
+         return;
+      }
+      void AddScore(int s) {
+         score += s;
+         return;
+      }
+      int GetScore() {
+         return score;
+      }
+};
+
 bool LoginFunc (string username, string password)
 {
    string e_username, e_password;
@@ -30,6 +69,7 @@ void RegisterFunc(string username, string password)
 int main() {
    string option, username, password;
    int pick;
+   User mainUser = User();
    cout << "Welcome to the GameHub" << endl;
    cout << "Would you like to login or register? ";
    // Input validation missing?
@@ -57,29 +97,37 @@ int main() {
       main();
    }
 
+   mainUser.SetUsername(username);
+   mainUser.SetPassword(password);
+
    // Only arrive here if registered or correct login info
-   cout << "Welcome " << username << "!" << endl;
+   cout << "-----------------------------------------" << endl;
+   cout << "Welcome " << mainUser.GetUsername() << "!" << endl;
+   cout << "Your current score is: " << mainUser.GetScore() << endl;
+   cout << "-----------------------------------------" << endl;
    cout << "Which game would you like to play? " << endl;
    cout << "1. Rock Paper Scissors" << endl;
    cout << "2. Tic Tac Toe" << endl;
    cout << "3. Snake" << endl;
-   // Add more options
    cout << "4. Exit" << endl;
    cin >> pick;
    switch (pick)
    {
       case 1:
-         RPS();
+         mainUser.AddScore(RPS());
          break;
       case 2:
+         // No score, two players
          TicTacToe();
          break;
       case 3:
-         SnakeGame();
+         mainUser.AddScore(SnakeGame());
          break;
       default:
          break;
    }
+
+   // Have score inserted into file for user so it is remembered for next time
 
    // Clear user info?
    username = "";

@@ -30,7 +30,7 @@ string LowerWord(string input)
     return output;
 }
 
-void RPS() {
+int RPS() {
 
     string play;
     cout << "Welcome to Rock Paper Scissors" << endl;
@@ -58,16 +58,19 @@ void RPS() {
         {
             // Win function
             WinFunction(enemy_pick);
+            return 100;
         }
         else if (enemy_pick == "Paper")
         {
             // Lose function
             LoseFunction(enemy_pick);
+            return 0;
         }
         else
         {
             // Tie function
             TieFunction(enemy_pick);
+            return 10;
         }
     }
     else if (play == "paper")
@@ -76,16 +79,19 @@ void RPS() {
         {
             // Win function
             WinFunction(enemy_pick);
+            return 100;
         }
         else if (enemy_pick == "Scissors")
         {
             // Lose function
             LoseFunction(enemy_pick);
+            return 0;
         }
         else
         {
             // Tie function
             TieFunction(enemy_pick);
+            return 10;
         }
     }
     else if (play == "scissors")
@@ -94,22 +100,20 @@ void RPS() {
         {
             // Win function
             WinFunction(enemy_pick);
+            return 100;
         }
         else if (enemy_pick == "Rock")
         {
             // Lose function
             LoseFunction(enemy_pick);
+            return 0;
         }
         else
         {
             // Tie function
             TieFunction(enemy_pick);
+            return 10;
         }
     }
-    else
-    {
-        // Would not arrive here
-        return;
-    }
-    return;
+    return 0;
 }
