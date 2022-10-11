@@ -18,7 +18,7 @@ Tic Tac Toe is a two player game, played on an output created board. Each player
 
 ### Snake
 
-Snake is played using the WASD on the keyboard. It is one dot(.) that has a tail added every time a fruit(O) is caught. The user can only lose if the head of the snake touches it's tail. When the user is out of bounds, the snake will come out of the other side of the screen.
+Snake is played using the WASD on the keyboard. It is one dot(.) that has a tail added every time a fruit(O) is caught. The user can only lose if the head of the snake touches it's tail. When the user is out of bounds, the snake will come out of the other side of the screen. This is done with X and Y coordinates for each component and modified accordingly inside of functions, such as the snake's tail following the head. Each element of the tail moves to the X and Y coordinates of the next element, creating a snake-like output consistent with the WASD movements.
 
 ### Resources
 
