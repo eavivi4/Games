@@ -3,7 +3,8 @@
 **A personal game hub that keeps track of the user's information and is updated based on the games played. The game options are**
 - **Rock Paper Scissors**
 - **Tic Tac Toe**
-- **Snake.**
+- **Snake**
+- **Wordle.**
 
 ### Login
 The login process contains either registering or logging in into an existing account. This is done through file creation, entering a username, password (which is hidden from sight) and a score which is updated throughout the game process. The user's information is stored as an object of the class User and is passed through functions to be updated.
