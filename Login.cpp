@@ -1,9 +1,11 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <windows.h>
 #include "RPS.h"
 #include "TTT.h"
 #include "Snake.h"
+#include "Wordle.h"
 using namespace std;
 
 class User {
@@ -85,7 +87,8 @@ void Hub(User mainUser) {
    cout << "1. Rock Paper Scissors" << endl;
    cout << "2. Tic Tac Toe" << endl;
    cout << "3. Snake" << endl;
-   cout << "4. Exit" << endl;
+   cout << "4. Wordle" << endl;
+   cout << "5. Exit" << endl;
    cin >> pick;
 
    // Choose the game based on user input
@@ -101,6 +104,9 @@ void Hub(User mainUser) {
       case 3:
          mainUser.AddScore(SnakeGame());
          break;
+      case 4:
+         mainUser.AddScore(Wordle());
+         break;
       default:
          break;
    }
@@ -109,7 +115,7 @@ void Hub(User mainUser) {
    RegisterFunc(mainUser.GetUsername(), mainUser.GetPassword(), mainUser.GetScore());
 
    // Ask user if to return to hub for another game if they didn't exit
-   if (pick != 4)
+   if (pick != 5)
    {
       cout << "Would you like to play another game from the hub? yes/no" << endl;
       cin >> answer;  
